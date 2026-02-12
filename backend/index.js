@@ -6,8 +6,23 @@ const authRoutes = require("./src/routes/auth");
 const app = express();
 const taskRoutes = require("./src/routes/tasks");
 
+const cors = require("cors");
 
-app.use(cors());
+const allowedOrigins = [
+  "http://localhost:5173",
+  "https://task-manager-pro-1-wvms.onrender.com",
+];
+
+app.use(
+  cors({
+    origin: function (origin, callback) {
+      if (!origin) return callback(null, true); // Postman/curl
+      if (allowedOrigins.includes(origin)) return callback(null, true);
+      return callback(new Error("Not allowed by CORS"));
+    },
+  })
+);
+
 app.use(express.json());
 app.use("/auth", authRoutes);
 app.use("/tasks", taskRoutes);
