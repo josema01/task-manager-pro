@@ -9,12 +9,36 @@ export default function Tasks() {
 
   const [tasks, setTasks] = useState([]);
   const [title, setTitle] = useState("");
+  const [dueDate, setDueDate] = useState(""); // YYYY-MM-DD
   const [q, setQ] = useState("");
   const [filter, setFilter] = useState("ALL");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [toast, setToast] = useState(null);
   const [deleteTarget, setDeleteTarget] = useState(null);
+
+  // -----------------------------
+  // Utilidades fecha (días restantes)
+  // -----------------------------
+  function startOfDay(d) {
+    const x = new Date(d);
+    x.setHours(0, 0, 0, 0);
+    return x;
+  }
+
+  function daysLeftLabel(dueDateValue) {
+    if (!dueDateValue) return null;
+
+    const today = startOfDay(new Date());
+    const due = startOfDay(new Date(dueDateValue));
+
+    const diffMs = due.getTime() - today.getTime();
+    const diffDays = Math.ceil(diffMs / (1000 * 60 * 60 * 24));
+
+    if (diffDays < 0) return `Vencida hace ${Math.abs(diffDays)}d`;
+    if (diffDays === 0) return "Vence hoy";
+    return `Quedan ${diffDays}d`;
+  }
 
   // -----------------------------
   // Cargar tareas
@@ -48,10 +72,14 @@ export default function Tasks() {
     try {
       await apiFetch("/tasks", {
         method: "POST",
-        body: JSON.stringify({ title: title.trim() }),
+        body: JSON.stringify({
+          title: title.trim(),
+          dueDate: dueDate ? new Date(`${dueDate}T00:00:00`).toISOString() : null,
+        }),
       });
 
       setTitle("");
+      setDueDate("");
       await loadTasks();
 
       setToast({ message: "Tarea creada correctamente", type: "success" });
@@ -190,6 +218,16 @@ export default function Tasks() {
               />
             </div>
 
+            <div className="field">
+              <div className="label">Fecha límite (opcional)</div>
+              <input
+                className="input"
+                type="date"
+                value={dueDate}
+                onChange={(e) => setDueDate(e.target.value)}
+              />
+            </div>
+
             <button className="btn" type="submit">
               Añadir
             </button>
@@ -250,34 +288,40 @@ export default function Tasks() {
             <p className="subtitle">No hay tareas con esos filtros.</p>
           ) : (
             <ul className="taskList">
-              {shown.map((t) => (
-                <li className="taskItem fadeIn" key={t.id}>
-                  <div
-                    className={`checkbox ${t.status === "DONE" ? "done" : ""}`}
-                    onClick={() => toggleTask(t)}
-                    role="button"
-                    tabIndex={0}
-                    title="Cambiar estado"
-                  >
-                    {t.status === "DONE" ? "✓" : ""}
-                  </div>
+              {shown.map((t) => {
+                const dl = daysLeftLabel(t.dueDate);
+                return (
+                  <li className="taskItem fadeIn" key={t.id}>
+                    <div
+                      className={`checkbox ${t.status === "DONE" ? "done" : ""}`}
+                      onClick={() => toggleTask(t)}
+                      role="button"
+                      tabIndex={0}
+                      title="Cambiar estado"
+                    >
+                      {t.status === "DONE" ? "✓" : ""}
+                    </div>
 
-                  <div style={{ flex: 1 }}>
-                    <p className={`taskTitle ${t.status === "DONE" ? "done" : ""}`}>
-                      {t.title}
-                    </p>
-                    <p className="taskMeta">{t.status === "DONE" ? "Hecha" : "Pendiente"}</p>
-                  </div>
+                    <div style={{ flex: 1 }}>
+                      <p className={`taskTitle ${t.status === "DONE" ? "done" : ""}`}>
+                        {t.title}
+                      </p>
+                      <p className="taskMeta">
+                        {t.status === "DONE" ? "Hecha" : "Pendiente"}
+                        {dl ? ` · ${dl}` : ""}
+                      </p>
+                    </div>
 
-                  <button
-                    type="button"
-                    className="smallBtn"
-                    onClick={() => deleteTask(t)}
-                  >
-                    Borrar
-                  </button>
-                </li>
-              ))}
+                    <button
+                      type="button"
+                      className="smallBtn"
+                      onClick={() => deleteTask(t)}
+                    >
+                      Borrar
+                    </button>
+                  </li>
+                );
+              })}
             </ul>
           )}
         </div>
@@ -286,9 +330,7 @@ export default function Tasks() {
       <ConfirmModal
         open={!!deleteTarget}
         title="Eliminar tarea"
-        message={
-          deleteTarget ? `¿Seguro que quieres borrar "${deleteTarget.title}"?` : ""
-        }
+        message={deleteTarget ? `¿Seguro que quieres borrar "${deleteTarget.title}"?` : ""}
         confirmText="Borrar"
         cancelText="Cancelar"
         onCancel={() => setDeleteTarget(null)}

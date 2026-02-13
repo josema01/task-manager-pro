@@ -309,3 +309,13 @@ a { color: inherit; }
 }
 .btnDanger:hover { filter: brightness(1.05); }
  /* FIN Modal confirm */
+
+ /* Due date hints (simple) */
+.taskMeta b { font-weight: 800; }
+
+.due-ok { color: rgba(255,255,255,0.72); }
+.due-today { color: rgba(255, 200, 0, 0.95); }
+.due-overdue { color: rgba(255, 90, 95, 0.95); }
+
+
+ /* FIN Due date hints (simple) */
