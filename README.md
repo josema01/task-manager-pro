@@ -1,171 +1,161 @@
 # 🚀 Task Manager Pro
 
-Aplicación fullstack moderna para la gestión de tareas con autenticación JWT, base de datos PostgreSQL y despliegue completo en la nube.
+![Status](https://img.shields.io/badge/Status-Completed-success?style=flat-square)
+![License](https://img.shields.io/badge/License-MIT-blue?style=flat-square)
+![Stack](https://img.shields.io/badge/Stack-PERN-blueviolet?style=flat-square)
 
-🔗 **Live Demo:**  
-https://task-manager-pro-1-wvms.onrender.com
+Aplicación **Fullstack** moderna para la gestión eficiente de tareas. Desarrollada con una arquitectura robusta, incluye autenticación segura mediante JWT, persistencia de datos en PostgreSQL y una interfaz reactiva optimizada.
+
+🔗 **Live Demo:** [https://task-manager-pro-1-wvms.onrender.com](https://task-manager-pro-1-wvms.onrender.com)
 
 ---
 
-## ✨ Features
+## ✨ Características Principales
 
-- 🔐 Registro e inicio de sesión con JWT  
-- 🛡 Protección de rutas autenticadas  
-- 🗄 Base de datos PostgreSQL  
-- ⚡ Prisma ORM v7  
-- 🧠 Filtros y búsqueda de tareas  
-- ✅ Marcar tareas como completadas  
-- 🗑 Modal personalizado para eliminación  
-- 🔔 Toast notifications  
-- 🎨 UI moderna con animaciones suaves  
-- 🌍 Deploy en Render (backend + frontend + database)  
+Esta aplicación va más allá de un simple CRUD, implementando patrones de diseño y UX profesional:
+
+* **🔐 Autenticación Segura:** Registro e inicio de sesión gestionado con JSON Web Tokens (JWT).
+* **🛡️ Seguridad:** Protección de rutas (Private Routes) y manejo de sesiones expiradas.
+* **🗄️ Persistencia:** Base de datos relacional PostgreSQL gestionada con Prisma ORM v7.
+* **🧠 Gestión de Datos:** Filtros avanzados, búsqueda en tiempo real y ordenamiento.
+* **🎨 UX/UI Moderna:** Interfaz limpia, feedback visual mediante *Toast Notifications* y modales personalizados para acciones destructivas.
+* **🌍 Despliegue Cloud:** Infraestructura completa desplegada en Render (Frontend, Backend y BD).
 
 ---
 
 ## 🧱 Tech Stack
 
 ### Frontend
-- React (Vite)  
-- React Router  
-- Fetch API  
-- CSS moderno con animaciones  
+| Tecnología | Propósito |
+| :--- | :--- |
+| **React (Vite)** | Librería principal para la UI (SPA). |
+| **React Router** | Enrutamiento del lado del cliente. |
+| **CSS Modules** | Estilos modernos y animaciones fluidas. |
+| **Fetch API** | Comunicación asíncrona con el backend. |
 
 ### Backend
-- Node.js  
-- Express  
-- Prisma ORM 7  
-- PostgreSQL  
-- JWT Authentication  
-
-### Deployment
-- Render (Web Service + Static Site + PostgreSQL)
+| Tecnología | Propósito |
+| :--- | :--- |
+| **Node.js & Express** | Servidor RESTful API. |
+| **Prisma ORM 7** | Capa de abstracción de base de datos y migraciones. |
+| **PostgreSQL** | Base de datos relacional robusta. |
+| **JWT** | Estándar de autenticación sin estado (Stateless). |
 
 ---
 
-## 📦 Arquitectura
+## 📦 Arquitectura del Sistema
 
-\`\`\`
-React (Frontend)
-        ↓
-Express API (Backend)
-        ↓
-PostgreSQL (Database)
-\`\`\`
+El proyecto sigue una arquitectura de **Separación de Intereses (SoC)** clara:
 
-Separación clara entre frontend y backend.
+```mermaid
+graph LR
+    A["Cliente (React)"] -- "JSON / HTTPS" --> B["API REST (Express)"]
+    B -- "Prisma Client" --> C[("PostgreSQL DB")]
+```
+---
+
+## ⚙️ Instalación y Configuración Local
+
+Sigue estos pasos para levantar el entorno de desarrollo en tu máquina local.
+
+### 1️⃣ Clonar el repositorio
+
+```console
+$git clone [https://github.com/josema01/task-manager-pro.git$](https://github.com/josema01/task-manager-pro.git$) cd task-manager-pro
+```
+
+### 2️⃣ Configuración del Backend
+
+Navega al directorio del servidor e instala las dependencias:
+
+```console
+$ cd backend
+$ npm install
+```
+
+Crea un archivo `.env` en la carpeta `backend` con las siguientes credenciales:
+
+```env
+DATABASE_URL="postgresql://user:password@localhost:5432/task_manager"
+JWT_SECRET="tu_clave_super_secreta_aqui"
+```
+
+Ejecuta las migraciones para crear las tablas en tu base de datos local:
+
+```console
+$ npx prisma migrate dev --name init
+```
+
+Inicia el servidor de desarrollo:
+
+```console
+$ npm run dev
+```
+
+### 3️⃣ Configuración del Frontend
+
+En una nueva terminal, navega al directorio del cliente:
+
+```console
+$cd ../frontend$ npm install
+```
+
+Crea un archivo `.env` en la carpeta `frontend`:
+
+```env
+VITE_API_URL="http://localhost:3001"
+```
+
+Inicia la aplicación React:
+
+```console
+$ npm run dev
+```
 
 ---
 
-## ⚙️ Instalación en local
+## 🌍 Variables de Entorno
 
-### 1️⃣ Clonar repositorio
+Asegúrate de configurar las siguientes variables para el correcto funcionamiento.
 
-\`\`\`bash
-git clone https://github.com/josema01/task-manager-pro.git
-cd task-manager-pro
-\`\`\`
+### Backend (`/backend/.env`)
 
----
+| Variable | Descripción | Ejemplo |
+| :--- | :--- | :--- |
+| `DATABASE_URL` | Cadena de conexión a PostgreSQL | `postgresql://user:pass@host:port/db` |
+| `JWT_SECRET` | String para firmar los tokens | `mySecretKey123` |
 
-### 2️⃣ Backend
+### Frontend (`/frontend/.env`)
 
-\`\`\`bash
-cd backend
-npm install
-\`\`\`
-
-Crear archivo `.env`:
-
-\`\`\`
-DATABASE_URL=postgresql://postgres:postgres@localhost:5433/task_manager
-JWT_SECRET=clave_super_secreta
-\`\`\`
-
-Migraciones:
-
-\`\`\`bash
-npx prisma migrate dev
-\`\`\`
-
-Iniciar servidor:
-
-\`\`\`bash
-npm run dev
-\`\`\`
+| Variable | Descripción | Ejemplo |
+| :--- | :--- | :--- |
+| `VITE_API_URL` | URL base de la API del Backend | `http://localhost:3001` |
 
 ---
 
-### 3️⃣ Frontend
+## 🧠 Decisiones Técnicas y Retos
 
-\`\`\`bash
-cd ../frontend
-npm install
-\`\`\`
-
-Crear archivo `.env`:
-
-\`\`\`
-VITE_API_URL=http://localhost:3001
-\`\`\`
-
-Iniciar:
-
-\`\`\`bash
-npm run dev
-\`\`\`
+* **Prisma 7 & Adapter PG:** Se optó por la última versión de Prisma para aprovechar las mejoras en rendimiento y tipado estricto con TypeScript (si aplica) o JS.
+* **Gestión de Errores Centralizada:** El backend implementa un middleware de manejo de errores para evitar *crashes* silenciosos y enviar respuestas HTTP coherentes.
+* **Custom Hooks:** En el frontend, la lógica de petición de datos se extrajo a un helper `apiFetch` para mantener los componentes limpios y reutilizables.
+* **UI Optimista:** Se priorizó la respuesta inmediata de la interfaz (modales, toasts) mientras se procesan las peticiones en segundo plano.
 
 ---
 
-## 🌍 Variables de entorno
+## 📈 Roadmap y Mejoras Futuras
 
-### Backend
-
-\`\`\`
-DATABASE_URL=
-JWT_SECRET=
-\`\`\`
-
-### Frontend
-
-\`\`\`
-VITE_API_URL=
-\`\`\`
-
----
-
-## 🔐 Autenticación
-
-- JWT firmado con `jsonwebtoken`
-- Middleware personalizado
-- Protección de rutas
-- Manejo de token inválido o expirado
-
----
-
-## 🧠 Decisiones técnicas
-
-- Uso de Prisma 7 con `@prisma/adapter-pg`
-- Migraciones gestionadas con `prisma migrate deploy`
-- Separación por capas (routes, middleware, prisma)
-- Manejo elegante de errores
-- Modal personalizado en lugar de `window.confirm`
-- Helper centralizado `apiFetch`
-
----
-
-## 📈 Mejoras futuras
-
-- Drag & drop para reordenar tareas
-- Dashboard con estadísticas
-- Modo oscuro / claro
-- Optimistic UI updates
-- Tests unitarios
-- CI/CD pipeline
+* [ ] Implementación de Drag & Drop (Dnd-kit) para priorizar tareas.
+* [ ] Panel de estadísticas (Dashboard) con gráficos.
+* [ ] Modo Oscuro / Claro (Dark Mode).
+* [ ] Testing unitario con Jest/Vitest.
+* [ ] Integración de CI/CD con GitHub Actions.
 
 ---
 
 ## 👨‍💻 Autor
 
-**José Manuel**  
-Ingeniero Informático  
-Proyecto fullstack desarrollado como portfolio profesional.
+**José Manuel** Ingeniero Informático & Fullstack Developer  
+
+Proyecto desarrollado con fines educativos y profesionales.
+
+[GitHub](https://github.com/josema01) • [LinkedIn](#)
