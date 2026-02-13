@@ -3,8 +3,8 @@ import { Link, useNavigate } from "react-router-dom";
 import { apiFetch } from "../api";
 
 export default function Login() {
-  const [email, setEmail] = useState("test@test.com");
-  const [password, setPassword] = useState("123456");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
@@ -69,7 +69,7 @@ export default function Login() {
               Crear cuenta
             </Link>
             <span className="subtitle" style={{ margin: 0 }}>
-              JWT + PostgreSQL
+              © Jose Manuel Moraga Lozano 2026
             </span>
           </div>
         </form>
