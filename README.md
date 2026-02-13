@@ -154,8 +154,6 @@ Asegúrate de configurar las siguientes variables para el correcto funcionamient
 
 ## 👨‍💻 Autor
 
-**José Manuel** Ingeniero Informático & Fullstack Developer  
+**José Manuel Moraga Lozano** Ingeniero Informático 
 
 Proyecto desarrollado con fines educativos y profesionales.
-
-[GitHub](https://github.com/josema01) • [LinkedIn](#)
